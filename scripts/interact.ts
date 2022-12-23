@@ -1,18 +1,14 @@
 import { ethers } from "hardhat";
 import contract from "../artifacts/contracts/HelloWorld.sol/HelloWorld.json";
 import * as dotenv from "dotenv";
-import { Contract } from "ethers";
 
 dotenv.config();
 
-const alchemyProvider = new ethers.providers.AlchemyProvider(
+const provider = new ethers.providers.AlchemyProvider(
   "goerli",
   process.env.API_KEY
 );
-const signer = new ethers.Wallet(
-  process.env.PRIVATE_KEY || "",
-  alchemyProvider
-);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY || "", provider);
 const helloWorldContract = new ethers.Contract(
   process.env.CONTRACT_ADDRESS || "",
   contract.abi,

@@ -1,0 +1,15 @@
+{
+  "attributes": [
+    {
+      "trait_type": "First Name",
+      "value": "Jeremy"
+    },
+    {
+      "trait_type": "Last Name",
+      "value": "Bogle"
+    }
+  ],
+  "description": "boopity boop",
+  "image": "https://gateway.pinata.cloud/ipfs/QmXTLz7dPkpp89vaZfgUSsCPgyn2AYDi54g3pdm8shPLYz",
+  "name": "JBogle"
+}
