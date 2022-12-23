@@ -16,6 +16,7 @@ const contract = new ethers.Contract(
 );
 
 const readMetadata = async (tokenId: number) => {
+  console.log("Reading metadata");
   const tokenUri = await contract.tokenURI(tokenId);
   console.log("The token uri is: " + tokenUri);
 };
