@@ -15,7 +15,7 @@ const contract = new ethers.Contract(
   signer
 );
 
-const readMessage = async () => {
+const readMessage = async () => { 
   const message = await contract.message();
   console.log("The message is: " + message);
 };

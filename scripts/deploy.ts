@@ -1,10 +1,10 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MyNFT");
+  const contractFactory = await ethers.getContractFactory("CandyMachine");
 
   // Start deployment, returning a promise that resolves to a contract object
-  const contract = await contractFactory.deploy("Test Name", "Test Symbol");
+  const contract = await contractFactory.deploy("Eth Test Mint", "CARDINAL");
   await contract.deployed();
   console.log("Contract deployed to address:", contract.address);
 }

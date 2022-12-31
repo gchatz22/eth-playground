@@ -16,9 +16,17 @@ contract CandyMachine is ERC721URIStorage, Ownable {
         ERC721(collectionName, collectionSymbol)
     {}
 
-    function addConfigLine(string memory tokenUri) private {
+    function addConfigLine(string memory tokenUri) public onlyOwner {
         configLines[configLinesCounter.current()] = tokenUri;
         configLinesCounter.increment();
+    }
+
+    function fetchConfigLines() public view returns (string[] memory) {
+        string[] memory ret = new string[](configLinesCounter.current());
+        for (uint256 i = 0; i < configLinesCounter.current(); i++) {
+            ret[i] = configLines[i];
+        }
+        return ret;
     }
 
     function mintedTokensAmount() public view returns (uint256) {
@@ -35,28 +43,30 @@ contract CandyMachine is ERC721URIStorage, Ownable {
 
     function findTokenUri() private returns (string memory) {
         string memory tokenUri = "";
-        while (bytes(tokenUri).length == 0) {
-            uint256 randomNumber = uint256(
-                keccak256(abi.encodePacked(block.difficulty, block.timestamp))
-            );
-            uint256 index = randomNumber % configLinesCounter.current();
-            string memory indexedData = configLines[index];
-            require(bytes(indexedData).length == 0, "invalid index");
-            tokenUri = indexedData;
-            delete configLines[index];
-            configLinesCounter.decrement();
-        }
+        uint256 randomNumber = uint256(
+            keccak256(
+                abi.encodePacked(
+                    block.difficulty,
+                    block.timestamp,
+                    totalSupply()
+                )
+            )
+        );
+        uint256 index = randomNumber % configLinesCounter.current();
+        tokenUri = configLines[index];
+        delete configLines[index];
+        configLinesCounter.decrement();
         return tokenUri;
     }
 
-    function mintNFT(address recipient) public onlyOwner returns (uint256) {
+    function mintNFT(address recipient) public returns (uint256) {
         require(tokensRemainingAmount() != 0, "minted out");
-        _tokenIds.increment();
 
         string memory tokenUri = findTokenUri();
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenUri);
+        _tokenIds.increment();
 
         return newItemId;
     }
